@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Welcome to Firebase Hosting</title>
+
+    <!-- update the version number as needed -->
+    <script defer src="/__/firebase/9.6.8/firebase-app-compat.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/9.6.8/firebase-auth-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-database-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-firestore-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-functions-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-messaging-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-storage-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-analytics-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-remote-config-compat.js"></script>
+    <script defer src="/__/firebase/9.6.8/firebase-performance-compat.js"></script>
+    <!-- 
+      initialize the SDK after all desired features are loaded, set useEmulator to false
+      to avoid connecting the SDK to running emulators.
+    -->
+    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
+
+    <style media="screen">
+      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
+      .message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
+      .message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
+      .message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
+      .message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
+      .message button, form >button { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
+      .message, .message button { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
+      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
+      @media (max-width: 600px) {
+        body, #message { margin-top: 0; background: white; box-shadow: none; }
+        body { border-top: 16px solid #ffa100; }
+      }
+
+      form{
+        max-width: 300px;
+        margin: auto;
+        padding: 5px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid black;
+        border-radius: 5px;
+        padding: 30px 20px;
+      }
+
+      input{
+        max-width: 200px;
+        padding: 8px;
+        margin: 3px;
+        border: none;
+        border-bottom: 1px solid black;
+        border-radius: 2px;
+      }
+      form > button, button {
+        max-width: 200px;
+        margin: auto;
+        margin-top: 30px;
+        padding: 10px 20px;
+      }
+      form > div {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+
+      #products > table {
+        width: 200px;
+        margin: 50px auto;
+    }
+
+    </style>
+  </head>
+  <body>
+    <div id="message" class="message">
+      <h2>Welcome</h2>
+      <form id="login">
+        <div>
+          <label for="email">Email:</label>
+          <input name="email" type="email"/>
+          </div>
+          <div>
+          <label for="password">Password:</label>
+          <input name="password" type="password"/>
+          </div>
+        <button type="button" onClick="loginWithEmailAndPassword()">Login</button>
+    </form>
+    <button onclick="loginWithGoogle()">Login With Google</button>
+      <p id="userInfo"></p>
+    </div>
+
+
+
+    <div id="postLogin" class="message hidden">
+      <h2>Welcome!</h2>
+      <h4>user Info:</h4>
+      <p class="email"></p>
+      <p class="displayName"></p>
+      <button type="button" onclick="logout()">Logout</button>
+      <div id="products">
+        <table>
+
+        </table>
+      </div>
+    </div>
+
+    <p id="load">Firebase SDK Loading&hellip;</p>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadEl = document.querySelector('#load');
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+        // // The Firebase SDK is initialized and available here!
+        //
+        // firebase.auth().onAuthStateChanged(user => { });
+        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
+        // firebase.firestore().doc('/foo/bar').get().then(() => { });
+        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
+        // firebase.messaging().requestPermission().then(() => { });
+        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
+        // firebase.analytics(); // call to activate
+        // firebase.analytics().logEvent('tutorial_completed');
+        // firebase.performance(); // call to activate
+        //
+        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
+
+        try {
+          let app = firebase.app();
+          let features = [
+            'auth', 
+            'database', 
+            'firestore',
+            'functions',
+            'messaging', 
+            'storage', 
+            'analytics', 
+            'remoteConfig',
+            'performance',
+          ].filter(feature => typeof app[feature] === 'function');
+          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
+        } catch (e) {
+          console.error(e);
+          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+        }
+
+    firebase.auth().onAuthStateChanged(function(user) {
+          const message = document.querySelector('#message');
+          const postLogin = document.querySelector('#postLogin');
+        if (user) {
+          message.classList.add('hidden');
+          postLogin.classList.remove('hidden');
+          postLogin.querySelector('.email').innerText = `Email: ${user.email}`;
+          postLogin.querySelector('.displayName').innerText = `Display Name: ${user.displayName}`;
+          refreshProducts();
+        } else {
+          message.classList.remove('hidden');
+          postLogin.classList.add('hidden');
+        };
+      });
+    });
+
+  function loginWithGoogle() {
+        console.log('Loging in...');
+        const provider = new firebase.auth.GoogleAuthProvider();
+        firebase.auth().signInWithPopup(provider).then(result => {
+          document.querySelector("#userInfo").innerText = result.user.email;
+        });
+  };
+
+  function loginWithEmailAndPassword() {
+      const formData = new FormData(document.querySelector('#login'));
+      const form = {};
+      Array.from(formData.entries()).forEach(pair => form[pair[0]] = pair[1]);
+      firebase.auth().signInWithEmailAndPassword(form.email, form.password)
+          .then(result => {
+          document.querySelector("#userInfo").innerText = result.user.email;
+        });
+  };
+
+  function logout() {
+    firebase.auth().signOut();
+  }
+
+  function refreshProducts() {
+    firebase.firestore().collection('products').get().then(result =>{
+      const tableEntries = [];
+      result.forEach(doc => tableEntries.push(doc.data()));
+      document.querySelector('#products>table').innerHTML = tableEntries.map(tableRow).join('');
+    });
+  };
+
+  function tableRow(data) {
+    return `<tr>
+    <td>${data.name}</td>
+    <td>${data.price}</td>
+    <td>${data.amount}</td>
+    </tr>`
+  }
+
+    </script>
+  </body>
+</html>
